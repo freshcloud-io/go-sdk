@@ -7,9 +7,11 @@ type FreshApplication interface {
 	EntryPoint() error
 	// Shutdown defines the place to tear down things where necessary
 	Shutdown() error
+	// GetApplication returns the actual object containing all the information
+	GetApplication() *Application
 }
 
 type FreshCron interface {
-	Create() (*Cron, error)
+	GetCron() *Cron
 	Execute(args *pb.CronExecuteRequest) *pb.CronExecuteResponse
 }
