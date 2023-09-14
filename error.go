@@ -1,12 +1,36 @@
 package fresh
 
-import "fmt"
+import "encoding/gob"
 
-type FreshError struct {
-	Code    string `json:"code"`
+type freshError struct {
 	Message string `json:"message"`
 }
 
-func (err *FreshError) Error() string {
-	return fmt.Sprintf("[%s] %s", err.Code, err.Message)
+func init() {
+	gob.Register(&freshError{})
+}
+
+// New returns an error that formats as the given text.
+func NewFreshError(text string) error {
+	return &freshError{text}
+}
+
+func (e *freshError) Error() string {
+	return e.Message
+}
+
+const version = 1
+
+func (e *freshError) GobEncode() ([]byte, error) {
+	r := make([]byte, 0, len(e.Message)+1)
+	r = append(r, version)
+	return append(r, e.Message...), nil
+}
+
+func (e *freshError) GobDecode(b []byte) error {
+	if b[0] != version {
+		return NewFreshError("gob decode of freshError failed: unsupported version")
+	}
+	e.Message = string(b[1:])
+	return nil
 }

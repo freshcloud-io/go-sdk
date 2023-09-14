@@ -1,6 +1,8 @@
 package fresh
 
-import pb "github.com/freshcloud-io/protos/go/freshcloud"
+import (
+	pb "github.com/freshcloud-io/protos/go/freshcloud"
+)
 
 type FreshApplication interface {
 	// EntryPoint defines the "main" function
