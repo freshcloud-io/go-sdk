@@ -36,7 +36,7 @@ func (f *FreshApplicationRPC) EntryPoint() error {
 	var resp error
 	err := f.client.Call("Plugin.EntryPoint", new(interface{}), &resp)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	return resp
 }
@@ -45,18 +45,18 @@ func (f *FreshApplicationRPC) Shutdown() error {
 	var resp error
 	err := f.client.Call("Plugin.Shutdown", new(interface{}), &resp)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	return resp
 }
 
-func (f *FreshApplicationRPC) GetApplication() *Application {
+func (f *FreshApplicationRPC) GetApplication() (*Application, error) {
 	var resp *Application
 	err := f.client.Call("Plugin.GetApplication", new(interface{}), &resp)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return resp
+	return resp, nil
 }
 
 type FreshApplicationRPCServer struct {
@@ -74,8 +74,9 @@ func (s *FreshApplicationRPCServer) Shutdown(args interface{}, resp *error) erro
 }
 
 func (s *FreshApplicationRPCServer) GetApplication(args interface{}, resp *Application) error {
-	*resp = *s.Impl.GetApplication()
-	return nil
+	v, err := s.Impl.GetApplication()
+	*resp = *v
+	return err
 }
 
 type FreshApplicationPlugin struct {

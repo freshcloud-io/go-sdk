@@ -8,10 +8,10 @@ type FreshApplication interface {
 	// Shutdown defines the place to tear down things where necessary
 	Shutdown() error
 	// GetApplication returns the actual application containing all the information
-	GetApplication() *Application
+	GetApplication() (*Application, error)
 }
 
 type FreshCron interface {
-	GetCron() *Cron
+	GetCron() (*Cron, error)
 	Execute(args *pb.CronExecuteRequest) *pb.CronExecuteResponse
 }

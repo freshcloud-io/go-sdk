@@ -66,8 +66,9 @@ func (s *FreshCronRPCServer) Execute(args interface{}, resp *pb.CronExecuteRespo
 }
 
 func (s *FreshCronRPCServer) GetCron(args interface{}, resp *Cron) error {
-	*resp = *s.Impl.GetCron()
-	return nil
+	v, err := s.Impl.GetCron()
+	*resp = *v
+	return err
 }
 
 type FreshCronPlugin struct {
