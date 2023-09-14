@@ -139,7 +139,7 @@ func NewApplication(opts ...ApplicationOption) (*Application, error) {
 		opt(a)
 	}
 
-	return a, nil
+	return a, &FreshError{}
 }
 
 func (a *Application) String() string {
